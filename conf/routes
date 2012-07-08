@@ -1,0 +1,32 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                           controllers.Application.index
+
+# ユーザ
+GET     /users/:id                  controllers.UserApiController.getUserById(id)
+POST    /users                      controllers.UserApiController.addUser()
+PUT     /users/:id                  controllers.UserApiController.updateUser(id)
+DELETE  /users/:id                  controllers.UserApiController.removeUser(id)
+
+# ユーザフォロー
+GET     /user_follows/:id           controllers.UserFollowApiController.getUserFollowById(id)
+POST    /user_follows               controllers.UserFollowApiController.addUserFollow()
+PUT     /user_follows/:id           controllers.UserFollowApiController.updateUserFollow(id)
+DELETE  /user_follows/:id           controllers.UserFollowApiController.removeUserFollow(id)
+GET     /user_follow/from_user/:id  controllers.UserFollowApiController.getUserFollowByFromUserId(id, pageNo: Int ?= 0, pageSize: Int ?= 100)
+GET     /user_follow/to_user/:id    controllers.UserFollowApiController.getUserFollowByToUserId(id, pageNo: Int ?= 0, pageSize: Int ?= 100)
+
+
+# ユーザステータス
+GET     /user_statuses/:id          controllers.UserStatusApiController.getUserStatusById(id)
+POST    /user_statuses              controllers.UserStatusApiController.addUserStatus()
+PUT     /user_statuses/:id          controllers.UserStatusApiController.updateUserStatus(id)
+DELETE  /user_statuses/:id          controllers.UserStatusApiController.removeUserStatus(id)
+GET     /user_status/user/:id       controllers.UserStatusApiController.getUserStatusByUserId(id, pageNo: Int ?= 0, pageSize: Int ?= 100)
+
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
