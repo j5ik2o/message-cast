@@ -20,9 +20,9 @@ object UserFollow {
   def apply(identity: Identity[util.UUID],
             fromUserId: Identity[util.UUID],
             toUserId: Identity[util.UUID],
-            createDate: util.Date,
-            updateDate: util.Date,
-            version: Long,
+            createDate: util.Date = new util.Date(),
+            updateDate: util.Date = new util.Date(),
+            version: Long = 0,
             deleted: Boolean = false) =
     new DefaultUserFollow(identity, fromUserId, toUserId, createDate, updateDate, version, deleted)
 

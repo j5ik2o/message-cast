@@ -6,6 +6,7 @@
 GET     /                           controllers.Application.index
 
 # ユーザ
+GET     /users                      controllers.UserApiController.getUsers(pageNo: Int ?= 0, pageSize: Int ?= 100)
 GET     /users/:id                  controllers.UserApiController.getUserById(id)
 POST    /users                      controllers.UserApiController.addUser()
 PUT     /users/:id                  controllers.UserApiController.updateUser(id)
@@ -16,8 +17,8 @@ GET     /user_follows/:id           controllers.UserFollowApiController.getUserF
 POST    /user_follows               controllers.UserFollowApiController.addUserFollow()
 PUT     /user_follows/:id           controllers.UserFollowApiController.updateUserFollow(id)
 DELETE  /user_follows/:id           controllers.UserFollowApiController.removeUserFollow(id)
-GET     /user_follow/from_user/:id  controllers.UserFollowApiController.getUserFollowByFromUserId(id, pageNo: Int ?= 0, pageSize: Int ?= 100)
-GET     /user_follow/to_user/:id    controllers.UserFollowApiController.getUserFollowByToUserId(id, pageNo: Int ?= 0, pageSize: Int ?= 100)
+GET     /user_follow/follows/:id    controllers.UserFollowApiController.getUserFollowByFromUserId(id, pageNo: Int ?= 0, pageSize: Int ?= 100)
+GET     /user_follow/followers/:id  controllers.UserFollowApiController.getUserFollowByToUserId(id, pageNo: Int ?= 0, pageSize: Int ?= 100)
 
 
 # ユーザステータス

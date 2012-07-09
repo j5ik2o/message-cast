@@ -29,6 +29,14 @@ object UserDao {
 
 class UserDao(dataSource: String) {
 
+  def findByName(name: String): Option[User] = {
+    DB.withConnection(dataSource) {
+      implicit connection =>
+        SQL("select id, name, password, create_date, update_date, version, deleted from `user` where `name` = {name}").
+          on('name -> name).as(UserDao.simple.singleOpt)
+    }
+  }
+
   def findById(id: String): Option[User] = {
     DB.withConnection(dataSource) {
       implicit connection =>

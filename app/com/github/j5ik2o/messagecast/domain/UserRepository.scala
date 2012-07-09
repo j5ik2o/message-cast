@@ -10,6 +10,8 @@ trait UserRepository extends Repository[User, util.UUID] {
 
   def findAll(pageNo: Long, pageSize: Long): Page[User]
 
+  def findByName(name: String): Option[User]
+
 }
 
 object UserRepository {
@@ -78,11 +80,21 @@ private[domain] class DefaultUserRepository extends UserRepository {
 
   def findAll(pageNo: Long, pageSize: Long) = {
     val page = userDao.findAll(pageNo, pageSize)
-    val items = page.items.map{
+    val items = page.items.map {
       e =>
         val id = Identity(util.UUID.fromString(e.id.get))
         User(id, e.name, e.password, e.createDate, e.updateDate, e.version)
     }
     Page(items, page.page, page.offset, page.total)
   }
+
+  def findByName(name: String): Option[User] = {
+    userDao.findByName(name).map {
+      e =>
+        val id = Identity(util.UUID.fromString(e.id.get))
+        User(id, e.name, e.password, e.createDate, e.updateDate, e.version)
+    }
+  }
+
 }
+
