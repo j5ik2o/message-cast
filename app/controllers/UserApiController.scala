@@ -14,7 +14,7 @@ import com.github.j5ik2o.messagecast.domain.{User, UserRepository}
 
 object UserApiController extends UserApiController
 
-class UserApiController extends Controller {
+class UserApiController extends Controller with ControllerSupport {
 
   private val userRepository = newUserRepository
 
@@ -25,7 +25,7 @@ class UserApiController extends Controller {
       .map(e => Ok(Json.toJson(e))).getOrElse(NotFound)
   }
 
-  def getUsers(pageNo: Long, pageSize: Long) = Action{
+  def getUsers(pageNo: Long, pageSize: Long) = Action {
     Ok(Json.toJson(userRepository.findAll(pageNo, pageSize)))
   }
 
@@ -36,7 +36,7 @@ class UserApiController extends Controller {
     )
   )
 
-  def addUser() = Action {
+  def addUser() = AuthAction {
     implicit request =>
       userForm.bindFromRequest.fold(
         formWithErrors => BadRequest,
@@ -53,7 +53,7 @@ class UserApiController extends Controller {
       )
   }
 
-  def updateUser(userId: String) = Action {
+  def updateUser(userId: String) = AuthAction {
     implicit request =>
       userForm.bindFromRequest.fold(
         formWithErrors => BadRequest,
@@ -70,9 +70,10 @@ class UserApiController extends Controller {
       )
   }
 
-  def removeUser(userId: String) = Action {
-    userRepository.delete(Identity(util.UUID.fromString(userId)))
-    Ok
+  def removeUser(userId: String) = AuthAction {
+    implicit request =>
+      userRepository.delete(Identity(util.UUID.fromString(userId)))
+      Ok
   }
 
 }

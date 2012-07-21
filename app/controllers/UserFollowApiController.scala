@@ -15,7 +15,7 @@ import com.github.j5ik2o.messagecast.domain.{UserFollow, UserFollowRepository}
 
 object UserFollowApiController extends UserFollowApiController
 
-class UserFollowApiController extends Controller {
+class UserFollowApiController extends Controller with ControllerSupport {
 
   private val userFollowRepository = newUserFollowRepository
 
@@ -26,14 +26,16 @@ class UserFollowApiController extends Controller {
       map(e => Ok(Json.toJson(e))).getOrElse(NotFound)
   }
 
-  def getUserFollowByFromUserId(id: String, pageNo: Int, pageSize: Int) = Action {
-    val page = userFollowRepository.findByFromUserId(Set(Identity(util.UUID.fromString(id))), pageNo, pageSize)
-    Ok(Json.toJson(page))
+  def getUserFollowByFromUserId(id: String, pageNo: Int, pageSize: Int) = AuthAction {
+    implicit request =>
+      val page = userFollowRepository.findByFromUserId(Set(Identity(util.UUID.fromString(id))), pageNo, pageSize)
+      Ok(Json.toJson(page))
   }
 
-  def getUserFollowByToUserId(id: String, pageNo: Int, pageSize: Int) = Action {
-    val page = userFollowRepository.findByToUserId(Set(Identity(util.UUID.fromString(id))), pageNo, pageSize)
-    Ok(Json.toJson(page))
+  def getUserFollowByToUserId(id: String, pageNo: Int, pageSize: Int) = AuthAction {
+    implicit request =>
+      val page = userFollowRepository.findByToUserId(Set(Identity(util.UUID.fromString(id))), pageNo, pageSize)
+      Ok(Json.toJson(page))
   }
 
   /**
@@ -55,7 +57,7 @@ class UserFollowApiController extends Controller {
     )
   )
 
-  def addUserFollow() = Action {
+  def addUserFollow() = AuthAction {
     implicit request =>
       userFollowForm.bindFromRequest.fold(
         formWithErrors => BadRequest,
@@ -72,7 +74,7 @@ class UserFollowApiController extends Controller {
       )
   }
 
-  def updateUserFollow(id: String) = Action {
+  def updateUserFollow(id: String) = AuthAction {
     implicit request =>
       userFollowForm.bindFromRequest.fold(
         formWithErrors => BadRequest,
@@ -89,8 +91,9 @@ class UserFollowApiController extends Controller {
       )
   }
 
-  def removeUserFollow(id: String) = Action {
-    userFollowRepository.delete(Identity(util.UUID.fromString(id)))
-    Ok
+  def removeUserFollow(id: String) = AuthAction {
+    request =>
+      userFollowRepository.delete(Identity(util.UUID.fromString(id)))
+      Ok
   }
 }

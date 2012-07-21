@@ -23,14 +23,14 @@ class AuthController extends Controller {
   def login = Action {
     implicit request =>
       loginForm.bindFromRequest.fold(
-        formWithErrors => BadRequest,
+        formWithErrors => BadRequest("INVALID PARAMETERS"),
         form => {
           val (name, password) = form
           userRepository.findByName(name) match {
-            case None => NotFound
+            case None => NotFound("NOT FOUND USER")
             case Some(user) if user.password == password =>
-              Ok.withSession("userId" -> user.identity.value.toString)
-            case _ => Unauthorized
+              Ok("LOGGED IN").withSession("userId" -> user.identity.value.toString)
+            case _ => Unauthorized("INVALID PASSWORD")
           }
         }
       )
@@ -39,9 +39,9 @@ class AuthController extends Controller {
   def logout = Action {
     implicit request =>
       session.get("userId") match {
-        case None => NotFound
+        case None => NotFound("NOT FOUND USER")
         case Some(session) =>
-          Ok.withNewSession
+          Ok("LOGGED OUT").withNewSession
       }
   }
 

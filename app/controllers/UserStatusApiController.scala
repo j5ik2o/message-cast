@@ -14,7 +14,7 @@ import com.github.j5ik2o.messagecast.domain.{StatusType, UserStatus, UserStatusR
 
 object UserStatusApiController extends UserStatusApiController
 
-class UserStatusApiController extends Controller {
+class UserStatusApiController extends Controller with ControllerSupport {
 
   private val userStatusRepository = newUserStatusRepository
 
@@ -39,7 +39,7 @@ class UserStatusApiController extends Controller {
     )
   )
 
-  def addUserStatus() = Action {
+  def addUserStatus() = AuthAction {
     implicit request =>
       userStatusForm.bindFromRequest.fold(
         formWithErrors => BadRequest,
@@ -59,7 +59,7 @@ class UserStatusApiController extends Controller {
       )
   }
 
-  def updateUserStatus(userStatusId: String) = Action {
+  def updateUserStatus(userStatusId: String) = AuthAction {
     implicit request =>
       userStatusForm.bindFromRequest.fold(
         formWithErrors => BadRequest,
@@ -79,9 +79,10 @@ class UserStatusApiController extends Controller {
       )
   }
 
-  def removeUserStatus(userStatusId: String) = Action {
-    userStatusRepository.delete(Identity(util.UUID.fromString(userStatusId)))
-    Ok
+  def removeUserStatus(userStatusId: String) = AuthAction {
+    request =>
+      userStatusRepository.delete(Identity(util.UUID.fromString(userStatusId)))
+      Ok
   }
 
 }

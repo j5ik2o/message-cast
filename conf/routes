@@ -5,6 +5,10 @@
 # Home page
 GET     /                           controllers.Application.index
 
+# 認証
+POST    /login                      controllers.AuthController.login
+POST    /logout                     controllers.AuthController.logout
+
 # ユーザ
 GET     /users                      controllers.UserApiController.getUsers(pageNo: Int ?= 0, pageSize: Int ?= 100)
 GET     /users/:id                  controllers.UserApiController.getUserById(id)
