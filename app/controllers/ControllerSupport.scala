@@ -9,7 +9,7 @@ trait ControllerSupport {
     Action {
       request =>
         request.session.get("userId") match {
-          case None => Unauthorized("認証が必要です")
+          case None => Unauthorized("NEED AUTH")
           case Some(v) => f(request)
         }
     }

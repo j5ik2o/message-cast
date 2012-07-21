@@ -5,9 +5,9 @@ import play.api.data._
 import play.api.data.Forms._
 import com.github.j5ik2o.messagecast.domain.UserRepository
 
-object AuthController extends AuthController
+object AuthApiController extends AuthApiController
 
-class AuthController extends Controller {
+class AuthApiController extends Controller {
 
   private val userRepository = newUserRepository
 
