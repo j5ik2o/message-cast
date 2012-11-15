@@ -21,6 +21,7 @@ class UserDaoSpec extends Specification {
           id = Id("1"),
           name = "1",
           password = "1",
+          bio = "aaa",
           createDate = new util.Date(),
           updateDate = new util.Date(),
           version = 1
@@ -35,6 +36,7 @@ class UserDaoSpec extends Specification {
           id = Id("1"),
           name = "1",
           password = "1",
+          bio = "aaa",
           createDate = new util.Date(),
           updateDate = new util.Date(),
           version = 0
@@ -50,6 +52,7 @@ class UserDaoSpec extends Specification {
           id = Id("1"),
           name = "1",
           password = "1",
+          bio = "aaa",
           createDate = new util.Date(),
           updateDate = new util.Date(),
           version = 0

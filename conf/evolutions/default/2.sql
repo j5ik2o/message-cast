@@ -2,11 +2,11 @@
 
 # --- !Ups
 
-INSERT INTO `user`(id, name, password, create_date, update_date, version, deleted)
-    values('56d62ff0-92a7-4d51-8acf-0efd25d9ec9e', 'user1', 'test1', now(), now(), 0, 0);
+INSERT INTO `user`(id, name, password, bio, create_date, update_date, version, deleted)
+    values('56d62ff0-92a7-4d51-8acf-0efd25d9ec9e', 'user1', 'test1', 'test1', now(), now(), 0, 0);
 
-INSERT INTO `user`(id, name, password, create_date, update_date, version, deleted)
-    values('61157972-b49c-406a-a7d2-2762f95d8e0d', 'user2', 'test2', now(), now(), 0, 0);
+INSERT INTO `user`(id, name, password, bio, create_date, update_date, version, deleted)
+    values('61157972-b49c-406a-a7d2-2762f95d8e0d', 'user2', 'test2', 'test2', now(), now(), 0, 0);
 
 INSERT INTO `user_follow`(id, from_user_id, to_user_id, create_date, update_date, version, deleted)
     values('d748e439-3798-4aee-baa9-84fb6bd856ec', '56d62ff0-92a7-4d51-8acf-0efd25d9ec9e', '61157972-b49c-406a-a7d2-2762f95d8e0d', now(), now(), 0, 0);

@@ -6,6 +6,7 @@ CREATE TABLE `user` (
    `id`             VARCHAR(64)     NOT NULL,
    `name`           VARCHAR(45)     NOT NULL,
    `password`       VARCHAR(64)     NOT NULL,
+   `bio`            VARCHAR(256)    NOT NULL,
    `create_date`    DATETIME        NOT NULL,
    `update_date`    DATETIME        NOT NULL,
    `version`        INT(11)         NOT NULL,

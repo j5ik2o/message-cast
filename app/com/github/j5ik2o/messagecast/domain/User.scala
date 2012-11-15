@@ -11,6 +11,8 @@ trait User extends Entity[util.UUID] {
 
   val password: String
 
+  val bio: String
+
   val createDate: util.Date
 
   val updateDate: util.Date
@@ -23,11 +25,12 @@ object User {
   def apply(identity: Identity[util.UUID],
             name: String,
             password: String,
+            bio: String,
             createDate: util.Date = new util.Date(),
             updateDate: util.Date = new util.Date(),
             version: Long = 0,
             deleted: Boolean = false) =
-    new DefaultUser(identity, name, password, createDate, updateDate, version, deleted)
+    new DefaultUser(identity, name, password, bio, createDate, updateDate, version, deleted)
 
   def unapply(user: DefaultUser): Option[(Identity[util.UUID], String, String)] =
     Some(user.identity, user.name, user.password)
@@ -39,6 +42,7 @@ private[domain] class DefaultUser
 (val identity: Identity[util.UUID],
  val name: String,
  val password: String,
+ val bio: String,
  val createDate: util.Date,
  val updateDate: util.Date,
  val version: Long,

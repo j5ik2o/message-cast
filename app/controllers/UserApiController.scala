@@ -32,7 +32,8 @@ class UserApiController extends Controller with ControllerSupport {
   private val userForm = Form(
     tuple(
       "name" -> nonEmptyText,
-      "password" -> nonEmptyText
+      "password" -> nonEmptyText,
+      "bio" -> nonEmptyText
     )
   )
 
@@ -41,11 +42,12 @@ class UserApiController extends Controller with ControllerSupport {
       userForm.bindFromRequest.fold(
         formWithErrors => BadRequest,
         form => {
-          val (name, password) = form
+          val (name, password, bio) = form
           val user = User(
             identity = Identity(util.UUID.randomUUID()),
             name = name,
-            password = password
+            password = password,
+            bio = bio
           )
           userRepository.store(user)
           Ok
@@ -58,11 +60,12 @@ class UserApiController extends Controller with ControllerSupport {
       userForm.bindFromRequest.fold(
         formWithErrors => BadRequest,
         form => {
-          val (name, password) = form
+          val (name, password, bio) = form
           val user = User(
             identity = Identity(util.UUID.fromString(userId)),
             name = name,
-            password = password
+            password = password,
+            bio = bio
           )
           userRepository.store(user)
           Ok

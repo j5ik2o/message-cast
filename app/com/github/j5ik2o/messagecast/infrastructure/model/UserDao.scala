@@ -14,12 +14,13 @@ object UserDao {
     get[Pk[String]]("user.id") ~
       get[String]("user.name") ~
       get[String]("user.password") ~
+      get[String]("user.bio") ~
       get[util.Date]("user.create_date") ~
       get[util.Date]("user.update_date") ~
       get[Long]("user.version") ~
       get[Boolean]("user.deleted") map {
-      case id ~ name ~ password ~ createDate ~ updateDate ~ version ~ deleted =>
-        User(id, name, password, createDate, updateDate, version, deleted)
+      case id ~ name ~ password ~ bio ~ createDate ~ updateDate ~ version ~ deleted =>
+        User(id, name, password, bio, createDate, updateDate, version, deleted)
     }
   }
 
@@ -32,7 +33,7 @@ class UserDao(dataSource: String) {
   def findByName(name: String): Option[User] = {
     DB.withConnection(dataSource) {
       implicit connection =>
-        SQL("select id, name, password, create_date, update_date, version, deleted from `user` where `name` = {name}").
+        SQL("select id, name, password, bio, create_date, update_date, version, deleted from `user` where `name` = {name}").
           on('name -> name).as(UserDao.simple.singleOpt)
     }
   }
@@ -40,7 +41,7 @@ class UserDao(dataSource: String) {
   def findById(id: String): Option[User] = {
     DB.withConnection(dataSource) {
       implicit connection =>
-        SQL("select id, name, password, create_date, update_date, version, deleted from `user` where `id` = {id}").
+        SQL("select id, name, password, bio, create_date, update_date, version, deleted from `user` where `id` = {id}").
           on('id -> id).as(UserDao.simple.singleOpt)
     }
   }
@@ -52,7 +53,7 @@ class UserDao(dataSource: String) {
         val users = SQL(
           """
           select
-            id, name, password, create_date, update_date, version, deleted from `user`
+            id, name, password, bio, create_date, update_date, version, deleted from `user`
           order by {orderBy}
           limit {pageSize} offset {offset}
           """).
@@ -78,6 +79,7 @@ class UserDao(dataSource: String) {
           """
             update `user`
               set `name` = {name},
+                `bio` = {bio},
                 `create_date` = {create_date},
                 `update_date` = {update_date},
                 `version` = `version` + 1,
@@ -87,6 +89,7 @@ class UserDao(dataSource: String) {
         ).on(
           'id -> user.id,
           'name -> user.name,
+          'bio -> user.bio,
           'create_date -> user.createDate,
           'update_date -> user.updateDate,
           'version -> user.version,
@@ -100,13 +103,14 @@ class UserDao(dataSource: String) {
       implicit connection =>
         SQL(
           """
-            insert into `user`(id, name, password, create_date, update_date, version, deleted) values (
-              {id}, {name}, {password}, {create_date}, {update_date}, 0, 0
+            insert into `user`(id, name, password, bio, create_date, update_date, version, deleted) values (
+              {id}, {name}, {password}, {bio}, {create_date}, {update_date}, 0, 0
             )
           """
         ).on(
           'id -> user.id,
           'name -> user.name,
+          'bio -> user.bio,
           'password -> user.password,
           'create_date -> user.createDate,
           'update_date -> user.updateDate

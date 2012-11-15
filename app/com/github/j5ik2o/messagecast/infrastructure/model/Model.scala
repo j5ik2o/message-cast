@@ -11,6 +11,7 @@ case class Page[A](items: Seq[A], page: Long, offset: Long, total: Long) {
 case class User(id: Pk[String] = NotAssigned,
                 name: String,
                 password: String,
+                bio: String,
                 createDate: util.Date,
                 updateDate: util.Date,
                 version: Long,

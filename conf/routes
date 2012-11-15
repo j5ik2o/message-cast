@@ -8,6 +8,7 @@ GET     /                           controllers.Application.index
 # 認証
 POST    /login                      controllers.AuthApiController.login
 POST    /logout                     controllers.AuthApiController.logout
+GET     /isauth                     controllers.AuthApiController.isAuth
 
 # ユーザ
 GET     /users                      controllers.UserApiController.getUsers(pageNo: Int ?= 0, pageSize: Int ?= 100)

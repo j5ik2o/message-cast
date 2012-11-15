@@ -36,10 +36,18 @@ class AuthApiController extends Controller {
       )
   }
 
+  def isAuth = Action {
+    implicit request =>
+      session.get("userId") match {
+        case None => Ok("LOGGED OUT")
+        case Some(_) => Ok("LOGGED IN")
+      }
+  }
+
   def logout = Action {
     implicit request =>
       session.get("userId") match {
-        case None => NotFound("NOT FOUND USER")
+        case None => NotFound("NOT FOUND SESSION").withNewSession
         case Some(session) =>
           Ok("LOGGED OUT").withNewSession
       }

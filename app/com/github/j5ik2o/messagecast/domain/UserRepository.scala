@@ -34,6 +34,7 @@ private[domain] class DefaultUserRepository extends UserRepository {
           id = e.id,
           name = entity.name,
           password = entity.password,
+          bio = entity.bio,
           createDate = entity.createDate,
           updateDate = entity.updateDate,
           version = entity.version
@@ -45,6 +46,7 @@ private[domain] class DefaultUserRepository extends UserRepository {
         id = Id(entity.identity.value.toString),
         name = entity.name,
         password = entity.password,
+        bio = entity.bio,
         createDate = entity.createDate,
         updateDate = entity.updateDate,
         version = entity.version
@@ -70,7 +72,7 @@ private[domain] class DefaultUserRepository extends UserRepository {
     userDao.findById(identifier.value.toString).map {
       e =>
         val id = Identity(util.UUID.fromString(e.id.get))
-        User(id, e.name, e.password, e.createDate, e.updateDate, e.version)
+        User(id, e.name, e.password, e.bio, e.createDate, e.updateDate, e.version)
     }
   }
 
@@ -83,7 +85,7 @@ private[domain] class DefaultUserRepository extends UserRepository {
     val items = page.items.map {
       e =>
         val id = Identity(util.UUID.fromString(e.id.get))
-        User(id, e.name, e.password, e.createDate, e.updateDate, e.version)
+        User(id, e.name, e.password, e.bio, e.createDate, e.updateDate, e.version)
     }
     Page(items, page.page, page.offset, page.total)
   }
@@ -92,7 +94,7 @@ private[domain] class DefaultUserRepository extends UserRepository {
     userDao.findByName(name).map {
       e =>
         val id = Identity(util.UUID.fromString(e.id.get))
-        User(id, e.name, e.password, e.createDate, e.updateDate, e.version)
+        User(id, e.name, e.password, e.bio, e.createDate, e.updateDate, e.version)
     }
   }
 

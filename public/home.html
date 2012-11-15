@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Home - Message Cast</title>
+    <link rel="stylesheet" media="screen" href="bootstrap/css/bootstrap.min.css" >
+    <script src="javascripts/jquery-1.7.1.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="bootstrap/js/bootstrap-alert.js"></script>
+    <script type="text/javascript">
+        $(
+            function(){
+                $('#messages').hide();
+                $.ajax({
+                    url: '/isauth',
+                    type: 'GET',
+                    success: function(data){
+                        if ('LOGGED IN' != data) {
+                            location.href='login.html';
+                        }
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        location.href='login.html';
+                    }
+                });
+                $('#submit').click(
+                    function(){
+                        $.ajax({
+                            url: '/user_statuses',
+                            type: 'POST',
+                            data: $('#form').serializeArray(),
+                            success: function(data) {
+                                $.ajax({
+                                    url: '/user_status/user/:id'
+                            }
+                            <!--error: function(xhr, textStatus, errorThrown) {-->
+                                <!--window.alert(xhr.status);-->
+                            <!--}-->
+                        });
+                    }
+                );
+            }
+        );
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h1>ステータス</h1>
+        </div>
+        <div class="row">
+            <div class="span12">
+                <div id="messages" class="alert alert-error">
+                    <span id="message"></span>
+                </div>
+                <form id="form" class="well form-vertical">
+                    <input type="text" name="status" />
+                    <input type="button" class="btn" id="submit" value="ポスト" />
+                </form>
+                <span id="statuses">
+                </span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

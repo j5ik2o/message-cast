@@ -32,9 +32,8 @@ class UserStatusApiController extends Controller with ControllerSupport {
 
   private val userStatusForm = Form(
     tuple(
-      "fromUserId" -> text,
       "toUserIds" -> list(text),
-      "statusType" -> number,
+      "statusType" -> optional(number),
       "status" -> nonEmptyText
     )
   )
@@ -44,13 +43,14 @@ class UserStatusApiController extends Controller with ControllerSupport {
       userStatusForm.bindFromRequest.fold(
         formWithErrors => BadRequest,
         form => {
-          val (fromUserId, toUserIds, statusType, status) = form
+          val fromUserId = session.get("userId").get
+          val (toUserIds, statusType, status) = form
           userStatusRepository.store(
             UserStatus(
               identity = Identity(util.UUID.randomUUID()),
               fromUserId = Identity(util.UUID.fromString(fromUserId)),
               toUserIds = toUserIds.map(e => Identity(util.UUID.fromString(e.toString))),
-              statusType = StatusType(statusType),
+              statusType = StatusType(statusType.getOrElse(0)),
               status = status
             )
           )
@@ -64,13 +64,14 @@ class UserStatusApiController extends Controller with ControllerSupport {
       userStatusForm.bindFromRequest.fold(
         formWithErrors => BadRequest,
         form => {
-          val (fromUserId, toUserIds, statusType, status) = form
+          val fromUserId = session.get("userId").get
+          val (toUserIds, statusType, status) = form
           userStatusRepository.store(
             UserStatus(
               identity = Identity(util.UUID.fromString(userStatusId)),
               fromUserId = Identity(util.UUID.fromString(fromUserId)),
               toUserIds = toUserIds.map(e => Identity(util.UUID.fromString(e.toString))),
-              statusType = StatusType(statusType),
+              statusType = StatusType(statusType.getOrElse(0)),
               status = status
             )
           )
